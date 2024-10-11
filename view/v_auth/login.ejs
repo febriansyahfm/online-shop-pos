@@ -1,11 +1,21 @@
 <%- include('../v_layout/head') %>
+
+
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <link href="/css-tambahan/login.css" rel="stylesheet">
     
     <main class="form-signin w-100 m-auto">
     <form method="post" action="/auth/proses-login">
-        <img class="center" src="/image/login.png" alt="" style="image-resolution: 100px;">
-
+        <img class="center" src="/image/login.png" alt="" >
+        <br>
+        <% if (typeof notifikasi !== 'undefined') {%>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <%= notifikasi %>
+            </div>
+            
+        <% } %>
+        
+        <br>
         <div class="form-floating">
         <input type="email" class="form-control" name="form_email" placeholder="Email">
         <label for="floatingInput">Email address</label>
@@ -22,6 +32,7 @@
         </label>
         </div>
         <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+        
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2024</p>
     </form>
     </main>
