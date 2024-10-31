@@ -12,5 +12,12 @@ module.exports =
             [form_email]
         )
         return eksekusi(sqlSyntax)
+    },
+    cariProfil: function (id_profil){
+        let sqlSyntax = mysql.format(
+            `select id, email,  password, nama_lengkap, role_id, date_format(created_at,"%d-%m-%Y %T") as created_at from user where id = ?`,
+            [id_profil]
+        )
+        return eksekusi(sqlSyntax)
     }
 }

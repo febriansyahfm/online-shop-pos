@@ -1,0 +1,176 @@
+<link rel="stylesheet" href="/css-tambahan/olshop.css">
+
+<header data-bs-theme="dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/olshop">We-Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item mx-1">
+                        <button class="nav-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Kategori
+                        </button>
+                    </li>
+                    <li class="nav-item mx-1">
+                        
+                        <form action="/olshop/produk/search" method="post" class="d-flex" role="search">
+                            <input class="form-control me-2" name ="form_search" type="search" placeholder="Cari produk" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">
+                                <i class="fa-solid fa-search"></i>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                <div class="float-end">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+
+                        
+                        <% if (req.session.user[0].role_id == 2) { %>
+                            <li class="nav-item mx-1">
+                                <a class="nav-link position-relative" href="/olshop/produk/history-belanja/<%= req.session.user[0].id %>">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </a>
+                                
+                            </li>
+                            <li class="nav-item mx-1">
+                                <a class="nav-link position-relative" href="/olshop/keranjang/list">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    <% if (produk_diKeranjang[0].jumlah > 0) { %>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <%= produk_diKeranjang[0].jumlah %>
+                                        </span>
+                                    <% } %>
+                                </a>
+                            </li>
+                        
+                            <li class="nav-item mx-1">
+                                <div class="dropdown">
+                                    <button class="nav-link position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-boxes-packing"></i>
+                                        <% if (produk_diProses[0].jumlah > 0) { %>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                <%= produk_diProses[0].jumlah %>
+                                            </span>
+                                        <% } %>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><span class="dropdown-item">Pesanan sedang diproses oleh penjual</span></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <% for(let i in detailProduk_diProses) { %>
+                                                <div class="dropdown-item">
+                                                    <table>
+                                                        <tr>
+                                                            <td><%= detailProduk_diProses[i].produk_nama %> (<%= detailProduk_diProses[i].qty %>)</td>
+                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                            <td class="text-end">Rp <%= Number(detailProduk_diProses[i].harga).toLocaleString('id-ID') %></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            <% } %>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item mx-1">
+                                <div class="dropdown">
+                                    <button class="nav-link position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-truck"></i>
+                                        <% if (produk_diKirim[0].jumlah > 0) { %>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                <%= produk_diKirim[0].jumlah %>
+                                            </span>
+                                        <% } %>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <span class="dropdown-item">Pesanan sedang</span>
+                                                    <span class="dropdown-item">dikirim oleh kurir</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    <a href="#" class="btn btn-sm btn-success"
+                                                    onclick="return confirm('Konfirmasi pesanan sudah diterima dengan baik ??')">
+                                                        Pesanan diterima
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <% for(let i in detailProduk_diKirim) { %>
+                                                <div class="dropdown-item">
+                                                    <table>
+                                                        <tr>
+                                                            <td><%= detailProduk_diKirim[i].produk_nama %> (<%= detailProduk_diKirim[i].qty %>)</td>
+                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                            <td class="text-end">Rp <%= Number(detailProduk_diKirim[i].harga).toLocaleString('id-ID') %></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            <% } %>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <% } %>
+
+                        <% if (req.session.user[0].role_id == 1) { %>
+                            <li class="nav-item mx-1">
+                                <a href="/olshop/produk" class="nav-link">
+                                    <i class="fa-solid fa-boxes-stacked me-1"></i> Produk Saya
+                                </a>
+                            </li>
+
+                            <li class="nav-item mx-1">
+                                <a class="nav-link position-relative" href="/olshop/orderan-masuk/list">
+                                    <i class="fa-solid fa-sack-dollar"></i>
+                                    <% if (orderanMasuk[0].jumlah > 0) { %>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <%= orderanMasuk[0].jumlah %>
+                                        </span>
+                                    <% } %>
+                                </a>
+                            </li>
+                        <% } %>
+
+                        <li class="nav-item mx-1">
+                            <form action="/auth/logout" method="post">
+                                <button type="submit" class="nav-link" onclick="return confirm('Lanjut keluar ??')">
+                                    <i class="fa-solid fa-right-from-bracket me-1"></i>
+                                </button>
+                            </form>
+                        </li>
+
+                        <li class="nav-item ms-4">
+                            <a class="nav-link" href="/olshop/produk/profil/<%= req.session.user[0].id %>">
+                                <i class="fa-solid fa-circle-user me-1"></i>
+                                <span><%= req.session.user[0].nama_lengkap %></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body text-white">
+            <div class="row">
+                <% for (const i in kategoriProduk) { %>
+                    <div class="col-lg-3">
+                        <a href="/olshop/produk/kategori/<%= kategoriProduk[i].id %>" class="text-decoration-none">
+                            <%= kategoriProduk[i].nama %>
+                        </a><br>
+                    </div>
+                <% } %>
+            </div>
+            
+        </div>
+    </div>
+</header>

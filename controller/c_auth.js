@@ -25,7 +25,7 @@ module.exports=
             let password_cocok = bcrypt.compareSync(form_password, email_exist[0].password)
             if (password_cocok){
                 req.session.user = email_exist
-                res.redirect('/toko')
+                res.redirect('/olshop')
             }else{
                 // tendang ke halaman login
                 let pesan = `Password Salah!`
@@ -49,5 +49,19 @@ module.exports=
             res.redirect(`/auth/login?notif=${pesan}`)
         }
             // lempar ke halaman login
-    }
+    },
+    proses_logout: function(req,res) {
+        req.session.destroy( (err) => {
+            res.redirect('/') // will always fire after session is destroyed
+        })
+    },
+    percobaan: function(req,res) {
+        let inputpassword   = req.params.inputpassword
+        let passwordhashed  = bcrypt.hashSync(inputpassword)
+        res.send(
+            `<span>inputpassword = ${inputpassword}</span><br>
+            <span>passwordhashed = ${passwordhashed}</span><br>`
+        )
+    },
+    
 }

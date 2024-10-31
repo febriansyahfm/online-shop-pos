@@ -1,0 +1,54 @@
+<%- include('../../v_layout/head') %>
+<%- include('../../v_layout/olshop-header') %>
+<body class="bg-body-secondary">
+    <div class="container my-5">
+        <h1 class="text-capitalize">History Belanja</h1>
+        <hr>
+        <% for(let i in getSemuaProdukCustomer) { %>
+                <div class="card border-0 mb-5">
+                    <div class="card-body">
+                            <div class="row">
+                                <div class="col-2 text-center p-2">
+                                    <img src="/upload/produk-foto/<%= getSemuaProdukCustomer[i].foto1 %>" class="img-fluid rounded-start" style="height: 50px; object-fit: contain;" alt="...">
+                                </div>
+                                <div class="col-10">
+                                    <h5 class="card-title"><%= getSemuaProdukCustomer[i].produk_nama %></h5><hr>
+                                    <span class="card-text">Qty: <b><%= getSemuaProdukCustomer[i].qty %></b></span><br>
+                                    <b>Rp <%= Number(getSemuaProdukCustomer[i].harga).toLocaleString('id-ID') %></b><br>
+                                    <span class="card-text">Status: <b><%= getSemuaProdukCustomer[i].status %></b></span><br>
+                                </div>
+                                <br>
+                                
+                                    
+                                
+                                <div class="row mt-2">
+                                    <form action="/olshop/produk/history-belanja/<%= getSemuaProdukCustomer[i].id_user %>/<%= getSemuaProdukCustomer[i].id %>" method="post">
+                                        <div class="col-12">
+                                        
+                                                <div class="d-grid gap-2">
+                                                    
+                                                    <button type="submit" class="btn btn-block btn-success">Konfirmasi</button>
+                                                </div>
+                                    
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                    
+                                            <div class="d-grid gap-2">
+                                                <button type="submit" class="btn btn-block btn-danger">Komplain</button>
+                                            </div>
+                                  
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+        <% } %>
+    </div>
+</body>
+<%- include('../../v_layout/olshop-footer') %>
+<%- include('../../v_layout/foot') %>

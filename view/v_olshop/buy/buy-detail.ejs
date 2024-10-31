@@ -1,0 +1,134 @@
+<%- include('../../v_layout/head') %>
+<%- include('../../v_layout/olshop-header') %>
+
+<script src="/js-tambahan/jquery.js"></script>
+<body class="bg-body-secondary">
+    <div class="container my-5">
+        <h1 class="mb-4">Detail Pembelian</h1>
+        <% if (typeof notifikasi !== 'undefined') { %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <%- notifikasi %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+        <form action="/olshop/buy-detail/bayar" method="post">
+            <div class="row">
+                <div class="col-lg-z"> 
+                    <div class="card border-0 mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-3 text-center p-4">
+                                <img src="/upload/produk-foto/<%= produkJual[0].foto1 %>" class="img-fluid rounded-start" style="height: 100px; object-fit: contain;" alt="..."> 
+                            </div> 
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h4 class="card-title"><%= produkJual[0].nama %></h4><hr>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span class="card-text">
+                                                <b id= "harga_text">
+                                                    Rp <%= Number(produkJual[0].harga).toLocaleString('id-ID') %>
+                                                </b>
+                                            </span><br>
+                                            <small class="card-text">stok: <%= produkJual[0].stok %></small><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <input type="number" value="0" min="1" name="form_qty" class="form-control form-control-sm" id = "qty_satuan">
+                                                <input type="hidden" class="harga_kalkulasi" name="form_harga_kalkulasi" id="harga_kalkulasi" >
+                                                <input type="hidden" id= "harga_satuan" name="" value="<%= produkJual[0].harga %>" >
+                                                <input type="hidden" name="form_id_produk" value="<%= produkJual[0].id %>">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-z">
+                    <div class="card border-0 mb-3">
+                        <div class="card-body">
+                            <h5><b>Ringkasan belanja</b></h5>
+                            <div class="row">
+                                <div class="col-6">Total Harga</div>
+                                <div class="col-6 text-end"><span id="harga_keseluruhan">0</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Total Qty</div>
+                                <div class="col-6 text-end"><span id="qty_keseluruhan">0</span></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-block btn-success">Bayar</button>
+                                        </div>
+                              
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+    
+</body>
+<script>
+    document.getElementById("qty_satuan")
+    // function hitung_qty_keseluruhan() {
+    //     // ambil semua qty yg ada di id 
+    //     let qty_total = Number(0)
+    //     $('#qty_satuan').each(function(){
+    //         qty_total += Number(this.value)
+    //     })
+
+    //     // assign totalnya ke element html yg idnya qty_keseluruhan
+    //     // $('#qty_keseluruhan').html(qty_total)
+    // }
+    // function hitung_harga_keseluruhan() {
+    //     // ambil semua harga yg ada di class harga_kalkulasi
+    //     let harga_total = Number(0)
+    //     $('#harga_kalkulasi').each(function(){
+    //         harga_total += Number(this.value)
+    //     })
+    //     // assign totalnya ke element html yg idnya harga_keseluruhan
+    //     $('#harga_keseluruhan').html(`Rp ${harga_total.toLocaleString('id-ID')}`)
+
+    //     console.log("harga total",harga_total)
+    // }
+    $(document).ready( function(){
+        // hitung_qty_keseluruhan()
+        // hitung_harga_keseluruhan()
+        $(document).on('change', '#qty_satuan' , function() {
+            let qty             = $(this).val()
+            let harga           = $(`#harga_satuan`).val()
+            let harga_kalkulasi = qty * harga
+            let harga_keseluruhan = qty * harga
+
+            if(qty < 1 ) $(`#qty_satuan`).html(Number(qty).toLocaleString('id-ID')) = 1;
+            // assign ke html
+            $(`#harga_text`).html('Rp '+Number(harga_kalkulasi).toLocaleString('id-ID'))
+            // assign ke inputan kalkulasi
+            $(`#harga_kalkulasi`).val(harga_kalkulasi)
+            // assign ke inputan harga kalkulasi
+            $(`#harga_keseluruhan`).html('Rp'+Number(harga_keseluruhan).toLocaleString('id-ID'))
+            
+            $(`#qty_keseluruhan`).html(Number(qty).toLocaleString('id-ID'))
+
+            console.log(harga_keseluruhan)
+            
+          
+        })
+    })
+</script>
+<%- include('../../v_layout/olshop-footer') %>
+<%- include('../../v_layout/foot') %>
